@@ -2,27 +2,12 @@
   <div align="center">
     <h1> Hi there, I'm Ijlal Khanzada👋<a href="https://github.com/ijlalkhanzada"></h1>
   </div>
-      
-- [Mubashar Nouman](https://www.youtube.com/channel/UC6lUUWMyuiibsJzV8BNdaEQ)
- -->
-
-🤵 Founder & CEO of @techviochats @internee.pk 🤖
-	
-👨‍💻 Lead NLP Developer at HandyHelps
-
-🔥 NLP & VUI Consultant and Web Developer 
-	
-💰 RISING TALENT at UPWORK ✅
-
-💸 LEVEL-01 SELLER of DIALOGFLOW on Fiverr
-	
-📢 Core Team Member of GOOGLE DEVELOPERS STUDENT CLUB  2022-23 | SMI UNIVERSITY
 
 ✨ Favorite Tech: Dialogflow, React, Typescript, Rasa 2.O
 
 📓 I’m currently learning LLM's and Genrative AI... 😭
 
-📧 hammadn788@gmail.com
+📧 ijlalkhanzada@gmail.com
 
 🎨 Portfolio: https://hammad-air.github.io/hammad/
 
