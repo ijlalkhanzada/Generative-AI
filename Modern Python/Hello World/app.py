@@ -1,1 +1,2 @@
-print("hello world")
+mypytest : str = 700
+print(mypytest)
