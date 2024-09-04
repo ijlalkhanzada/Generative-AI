@@ -54,29 +54,23 @@ def piaic():
 9. write your own test
     * `test/test_main.py`
     ```
-    from fastapi.testclient import TestClient
-    from fastapi_helloworld_online.main import app
+   from fastapi import FastAPI
+from fastapi.responses import HTMLResponse
 
 
-    def test_root_path():
-        client = TestClient(app=app)
-        response = client.get("/")
-        assert response.status_code == 200
-        assert response.json() == {"Hello": "world"}
+app  = FastAPI()
 
-    def test_piaic_description():
-        client = TestClient(app=app)
-        response = client.get("/piaic/")
-        assert response.status_code == 200
-        assert response.json() == {"organization": "piaic"}
+@app.get("/" , response_class=HTMLResponse)
+def index():
+        return "<h1>Hello world</h1>"
 
-    def test_third_check():
-        client = TestClient(app=app)
-        response = client.get("/piaic/")
-        assert response.status_code == 200
-        assert response.json() == {"organization": "ABC"}
+@app.get("/piaic/")
+def piaic():
+    return {"organization": "piaic"}
 
-
+@app.get("/ijlal/")
+def ijlal():
+    return {"Muhammad": "Khanzada"}
 
     ```
 
