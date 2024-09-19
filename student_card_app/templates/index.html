@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Student Card Generator</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        body {
+            padding-top: 20px;
+        }
+        .card-container {
+            max-width: 600px;
+            margin: auto;
+        }
+    </style>
+</head>
+<body>
+    <div class="container card-container">
+        <h1 class="text-center mb-4">Student Card Generator</h1>
+
+        <!-- Flash Messages -->
+        {% with messages = get_flashed_messages(with_categories=true) %}
+          {% if messages %}
+            <div class="alert alert-dismissible fade show" role="alert">
+              {% for category, message in messages %}
+                <div class="alert alert-{{ category }}">{{ message }}</div>
+              {% endfor %}
+            </div>
+          {% endif %}
+        {% endwith %}
+
+        <form action="/" method="post" enctype="multipart/form-data" id="student-form">
+            <div class="form-group">
+                <label for="name">Name:</label>
+                <input type="text" id="name" name="name" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="roll_no">Roll No:</label>
+                <input type="text" id="roll_no" name="roll_no" class="form-control" readonly value="{{ roll_no }}">
+            </div>
+            <div class="form-group">
+                <label for="distance_learning">Distance Learning:</label>
+                <input type="text" id="distance_learning" name="distance_learning" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="city">City:</label>
+                <select id="city" name="city" class="form-control" required>
+                    <option value="">Select City</option>
+                    <option value="Karachi">Karachi</option>
+                    <option value="Lahore">Lahore</option>
+                    <option value="Islamabad">Islamabad</option>
+                    <option value="Peshawar">Peshawar</option>
+                    <!-- Add other major cities of Pakistan here -->
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="center">Center:</label>
+                <select id="center" name="center" class="form-control" required>
+                    <option value="">Select Center</option>
+                    <!-- Centers will be populated based on the city -->
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="campus">Campus:</label>
+                <select id="campus" name="campus" class="form-control" required>
+                    <option value="">Select Campus</option>
+                    <!-- Campus will be populated based on the selected center -->
+                </select>
+            </div>
+            
+            <div class="form-group">
+                <label for="days_time">Days / Time:</label>
+                <input type="text" id="days_time" name="days_time" class="form-control" required>
+            </div>
+            <div class="form-group">
+                <label for="batch">Batch:</label>
+                <input type="text" id="batch" name="batch" class="form-control" readonly value="{{ batch }}">
+            </div>
+            <div class="form-group">
+                <label for="photo">Student Photo:</label>
+                <input type="file" id="photo" name="photo" class="form-control-file" required>
+            </div>
+            <button type="submit" class="btn btn-primary btn-block">Generate Card</button>
+        </form>
+    </div>
+
+    <!-- Bootstrap JS and dependencies -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.5.2/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+
+
+    <!-- Add this script at the end of your HTML body -->
+<script>
+    const data = {
+        "Karachi": {
+            "Auditoriums": ["Jinnah Auditorium", "Expo Center", "Frere Hall"],
+            "Campuses": {
+                "Jinnah Auditorium": ["Main Campus", "North Campus"],
+                "Expo Center": ["Central Campus", "East Campus"],
+                "Frere Hall": ["West Campus", "South Campus"]
+            }
+        },
+        "Lahore": {
+            "Auditoriums": ["Alhamra Hall", "Gaddafi Stadium"],
+            "Campuses": {
+                "Alhamra Hall": ["Main Campus", "Cavalry Campus"],
+                "Gaddafi Stadium": ["Sports Campus", "Liberty Campus"]
+            }
+        },
+        "Islamabad": {
+            "Auditoriums": ["Convention Center", "Lok Virsa"],
+            "Campuses": {
+                "Convention Center": ["Islamabad Main", "F-10 Campus"],
+                "Lok Virsa": ["Shakarparian Campus", "Zero Point Campus"]
+            }
+        },
+        "Peshawar": {
+            "Auditoriums": ["Nishtar Hall", "Khyber Auditorium"],
+            "Campuses": {
+                "Nishtar Hall": ["University Campus", "Town Campus"],
+                "Khyber Auditorium": ["Hayatabad Campus", "Cantt Campus"]
+            }
+        }
+    };
+
+    // Function to update centers based on selected city
+    document.getElementById('city').addEventListener('change', function() {
+        const city = this.value;
+        const centerSelect = document.getElementById('center');
+        const campusSelect = document.getElementById('campus');
+        
+        // Reset the center and campus dropdowns
+        centerSelect.innerHTML = '<option value="">Select Center</option>';
+        campusSelect.innerHTML = '<option value="">Select Campus</option>';
+        
+        if (city && data[city]) {
+            // Populate centers based on the selected city
+            const centers = data[city].Auditoriums;
+            centers.forEach(function(center) {
+                const option = document.createElement('option');
+                option.value = center;
+                option.text = center;
+                centerSelect.appendChild(option);
+            });
+        }
+    });
+
+    // Function to update campuses based on selected center
+    document.getElementById('center').addEventListener('change', function() {
+        const center = this.value;
+        const city = document.getElementById('city').value;
+        const campusSelect = document.getElementById('campus');
+        
+        // Reset the campus dropdown
+        campusSelect.innerHTML = '<option value="">Select Campus</option>';
+        
+        if (center && city && data[city] && data[city].Campuses[center]) {
+            // Populate campuses based on the selected center
+            const campuses = data[city].Campuses[center];
+            campuses.forEach(function(campus) {
+                const option = document.createElement('option');
+                option.value = campus;
+                option.text = campus;
+                campusSelect.appendChild(option);
+            });
+        }
+    });
+
+    document.getElementById('student-form').addEventListener('submit', function(event) {
+        // Delay form reset to ensure the file download starts
+        setTimeout(function() {
+            document.getElementById('student-form').reset();
+        }, 2000); // Delay in milliseconds (adjust as needed)
+    });
+</script>
+
+</body>
+</html>
